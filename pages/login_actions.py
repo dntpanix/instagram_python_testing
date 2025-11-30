@@ -1,169 +1,245 @@
-from pages.login import LoginPage
-from framework.locator import DriverType
-from framework.logger import log_action
+import time
+from framework.logger import log_action, setup_logger
 
-class LoginPageActions(LoginPage):
+
+class LoginPageActions:
+
+    def __init__(self, login_page):
+        """
+        Initialize LoginPageActions with a LoginPage instance
+
+        Args:
+            login_page: LoginPage object instance
+        """
+        if not isinstance(login_page, type(login_page)):
+            # Just check it has the expected methods
+            required_methods = [
+                "is_username_input_visible",
+                "is_password_input_visible",
+                "username_input",
+                "password_input",
+                "login_button",
+                "error_message",
+            ]
+            for method in required_methods:
+                if not hasattr(login_page, method):
+                    raise AttributeError(f"LoginPage must have '{method}' attribute")
+
+        self._page = login_page
+        self._logger = setup_logger(self.__class__.__name__)
+
+    @log_action("Performing login")
+    def login(
+        self, username: str, password: str, wait_after_login: float = 2.0
+    ) -> bool:
+        """
+        Perform login with username and password
+
+        Args:
+            username: Username or email
+            password: Password
+            wait_after_login: Time to wait after clicking login button (seconds)
+
+        Returns:
+            True if login was successful, False otherwise
+
+        Raises:
+            Exception: If login fails with details
+        """
+        try:
+            self._logger.info(f"Starting login with username: {username}")
+
+            # Check if inputs are visible
+            if not self._page.is_username_input_visible():
+                raise AssertionError("Username input not visible")
+
+            if not self._page.is_password_input_visible():
+                raise AssertionError("Password input not visible")
+
+            # Enter credentials
+            self._logger.debug("Entering username")
+            self._page.username_input.send_keys(username)
+
+            self._logger.debug("Entering password")
+            self._page.password_input.send_keys(password)
+
+            # Click login button
+            self._logger.debug("Clicking login button")
+            self._page.login_button.click()
+
+            # Wait for page to process login
+            time.sleep(wait_after_login)
+
+            self._logger.info("Login completed successfully")
+            return True
+
+        except Exception as e:
+            self._logger.error(f"Login failed: {type(e).__name__}: {str(e)}")
+            raise
+
+    @log_action("Entering username")
+    def enter_username(self, username: str) -> None:
+        """
+        Enter username without password
+
+        Args:
+            username: Username or email to enter
+        """
+        try:
+            if not self._page.is_username_input_visible():
+                raise AssertionError("Username input not visible")
+
+            self._logger.debug(f"Entering username: {username}")
+            self._page.username_input.send_keys(username)
+
+        except Exception as e:
+            self._logger.error(f"Failed to enter username: {e}")
+            raise
+
+    @log_action("Entering password")
+    def enter_password(self, password: str) -> None:
+        """
+        Enter password without username
+
+        Args:
+            password: Password to enter
+        """
+        try:
+            if not self._page.is_password_input_visible():
+                raise AssertionError("Password input not visible")
+
+            self._logger.debug("Entering password")
+            self._page.password_input.send_keys(password)
+
+        except Exception as e:
+            self._logger.error(f"Failed to enter password: {e}")
+            raise
+
+    @log_action("Clicking login button")
+    def click_login_button(self) -> None:
+        """Click the login button"""
+        try:
+            if not self._page.is_login_button_clickable():
+                raise AssertionError("Login button not clickable")
+
+            self._logger.debug("Clicking login button")
+            self._page.login_button.click()
+
+        except Exception as e:
+            self._logger.error(f"Failed to click login button: {e}")
+            raise
+
+    @log_action("Checking if username input is visible")
+    def is_username_input_visible(self) -> bool:
+        """Check if username input is visible"""
+        try:
+            return self._page.is_username_input_visible()
+        except Exception as e:
+            self._logger.error(f"Failed to check username visibility: {e}")
+            return False
+
+    @log_action("Checking if password input is visible")
+    def is_password_input_visible(self) -> bool:
+        """Check if password input is visible"""
+        try:
+            return self._page.is_password_input_visible()
+        except Exception as e:
+            self._logger.error(f"Failed to check password visibility: {e}")
+            return False
 
     @log_action("Checking if login page is displayed")
     def is_page_displayed(self) -> bool:
         """Check if login page is displayed"""
-        return (
-            self.login_form.is_presented() and
-            self.username_input.is_presented() and
-            self.password_input.is_presented() and
-            self.login_button.is_presented()
-        )
-    
-    @log_action("Performing login")
-    def login(self, username: str, password: str) -> None:
-        """
-        Perform login with username and password
-        
-        Args:
-            username: Username or email
-            password: Password
-            
-        Raises:
-            Exception: If login fails
-        """
         try:
-            self._logger.info(f"Attempting login with username: {username}")
-            
-            # Clear and fill username
-            self.username_input.send_keys(username)
-            self._logger.debug("Username entered successfully")
-            
-            # Clear and fill password
-            self.password_input.send_keys(password)
-            self._logger.debug("Password entered successfully")
-            
-            # Click login button
-            self.login_button.click()
-            self._logger.info("Login button clicked successfully")
-            
+            return self._page.is_page_displayed()
         except Exception as e:
-            self._logger.error(f"Login failed: {str(e)}")
-            raise
-    
-    @log_action("Entering username")
-    def enter_username(self, username: str) -> None:
-        """
-        Enter username in the username field
-        
-        Args:
-            username: Username or email to enter
-        """
-        self.username_input.send_keys(username)
-        self._logger.debug(f"Username entered: {username}")
-    
-    @log_action("Entering password")
-    def enter_password(self, password: str) -> None:
-        """
-        Enter password in the password field
-        
-        Args:
-            password: Password to enter
-        """
-        self.password_input.send_keys(password)
-        self._logger.debug("Password entered")
-    
-    @log_action("Clicking login button")
-    def click_login_button(self) -> None:
-        """Click the login button"""
-        self.login_button.click()
-        self._logger.debug("Login button clicked")
-    
-    @log_action("Getting error message")
-    def get_error_message(self) -> str:
-        """
-        Get error message text if displayed
-        
-        Returns:
-            Error message text or None if not displayed
-        """
-        if self.error_message.is_visible():
-            message = self.error_message.get_text()
-            self._logger.warning(f"Error message displayed: {message}")
-            return message
-        return None
-    
+            self._logger.error(f"Failed to check page display: {e}")
+            return False
+
     @log_action("Checking if error message is displayed")
     def is_error_message_displayed(self) -> bool:
-        """
-        Check if error message is displayed
-        
-        Returns:
-            True if error message is visible, False otherwise
-        """
-        return self.error_message.is_visible()
-    
+        """Check if error message is displayed"""
+        try:
+            return self._page.is_error_message_displayed()
+        except Exception as e:
+            self._logger.error(f"Failed to check error message: {e}")
+            return False
+
+    @log_action("Getting error message")
+    def get_error_message(self) -> str:
+        """Get error message text if displayed"""
+        try:
+            return self._page.get_error_message()
+        except Exception as e:
+            self._logger.error(f"Failed to get error message: {e}")
+            return None
+
     @log_action("Clicking forgot password link")
     def click_forgot_password(self) -> None:
         """Click the forgot password link"""
-        self.forgot_password_link.click()
-        self._logger.debug("Forgot password link clicked")
-    
+        try:
+            self._logger.debug("Clicking forgot password link")
+            self._page.forgot_password_link.click()
+
+        except Exception as e:
+            self._logger.error(f"Failed to click forgot password: {e}")
+            raise
+
     @log_action("Clicking sign up link")
     def click_sign_up(self) -> None:
         """Click the sign up link"""
-        self.sign_up_link.click()
-        self._logger.debug("Sign up link clicked")
-    
+        try:
+            self._logger.debug("Clicking sign up link")
+            self._page.sign_up_link.click()
+
+        except Exception as e:
+            self._logger.error(f"Failed to click sign up: {e}")
+            raise
+
     @log_action("Clicking Facebook login button")
     def click_facebook_login(self) -> None:
         """Click the Facebook login button"""
-        self.facebook_login_button.click()
-        self._logger.debug("Facebook login button clicked")
-    
-    @log_action("Checking if username input is visible")
-    def is_username_input_visible(self) -> bool:
-        """Check if username input is visible"""
-        return self.username_input.is_visible()
-    
-    @log_action("Checking if password input is visible")
-    def is_password_input_visible(self) -> bool:
-        """Check if password input is visible"""
-        return self.password_input.is_visible()
-    
-    @log_action("Getting username value")
-    def get_username_value(self) -> str:
-        """Get the current value of username input"""
-        return self.username_input.get_text()
-    
-    @log_action("Clearing username input")
-    def clear_username(self) -> None:
-        """Clear the username input field"""
-        username_elem = self.username_input.find()
-        if username_elem:
-            if self._driver_type == DriverType.SELENIUM:
-                username_elem.clear()
-            else:  # PLAYWRIGHT
-                username_elem.clear()
-            self._logger.debug("Username field cleared")
-    
-    @log_action("Clearing password input")
-    def clear_password(self) -> None:
-        """Clear the password input field"""
-        password_elem = self.password_input.find()
-        if password_elem:
-            if self._driver_type == DriverType.SELENIUM:
-                password_elem.clear()
-            else:  # PLAYWRIGHT
-                password_elem.clear()
-            self._logger.debug("Password field cleared")
-    
-    @log_action("Checking if login button is clickable")
-    def is_login_button_clickable(self) -> bool:
-        """Check if login button is clickable"""
-        return self.login_button.is_clickable()
-    
-    @log_action("Taking login page screenshot")
-    def screenshot(self, file_name: str = 'login_page.png') -> None:
+        try:
+            self._logger.debug("Clicking Facebook login button")
+            self._page.facebook_login_button.click()
+
+        except Exception as e:
+            self._logger.error(f"Failed to click Facebook login: {e}")
+            raise
+
+    @log_action("Taking screenshot")
+    def screenshot(self, file_name: str = "login_page.png") -> None:
+        """Take a screenshot of the login page"""
+        try:
+            self._page.screenshot(file_name)
+            self._logger.info(f"Screenshot saved: {file_name}")
+        except Exception as e:
+            self._logger.error(f"Failed to take screenshot: {e}")
+            raise
+
+    @log_action("Validating login form")
+    def validate_login_form(self) -> bool:
         """
-        Take a screenshot of the login page
-        
-        Args:
-            file_name: Name of the screenshot file
+        Validate that all login form elements are present and visible
+
+        Returns:
+            True if all elements are valid, False otherwise
         """
-        self.login_form.highlight_and_screenshot(file_name)
-        self._logger.debug(f"Screenshot saved: {file_name}")
+        try:
+            checks = {
+                "Username input visible": self._page.is_username_input_visible(),
+                "Password input visible": self._page.is_password_input_visible(),
+                "Login button clickable": self._page.is_login_button_clickable(),
+            }
+
+            all_valid = all(checks.values())
+
+            for check_name, result in checks.items():
+                status = "✓" if result else "✗"
+                self._logger.info(f"{status} {check_name}: {result}")
+
+            return all_valid
+
+        except Exception as e:
+            self._logger.error(f"Validation failed: {e}")
+            return False
