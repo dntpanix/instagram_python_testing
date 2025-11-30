@@ -1,7 +1,7 @@
 """Main element abstraction - supports both Selenium and Playwright"""
-from typing import Optional, List, Union, Any
-from locator import Locator, DriverType
-from logger import log_action, setup_logger
+from typing import Optional, List, Any
+from framework.logger import log_action, setup_logger
+from framework.locator import Locator, DriverType
 
 class WebElement:
     """Type-safe WebElement abstraction supporting both Selenium and Playwright"""
@@ -24,14 +24,14 @@ class WebElement:
     def _initialize_managers(self):
         """Initialize appropriate managers based on driver type"""
         if self._driver_type == DriverType.SELENIUM:
-            from waiter import SeleniumWaitManager
-            from screenshot import SeleniumScreenshotManager
+            from framework.waiter import SeleniumWaitManager
+            from framework.screenshot import SeleniumScreenshotManager
             
             self._wait_manager = SeleniumWaitManager(self._driver, self._timeout)
             self._screenshot_manager = SeleniumScreenshotManager(self._driver)
         else:  # PLAYWRIGHT
-            from waiter import PlaywrightWaitManager
-            from screenshot import PlaywrightScreenshotManager
+            from framework.waiter import PlaywrightWaitManager
+            from framework.screenshot import PlaywrightScreenshotManager
             
             self._wait_manager = PlaywrightWaitManager(self._driver, self._timeout)
             self._screenshot_manager = PlaywrightScreenshotManager(self._driver)
@@ -95,10 +95,10 @@ class WebElement:
             raise ElementNotFound(f"Element {self._locator} not found")
         
         if self._driver_type == DriverType.SELENIUM:
-            from actions import SeleniumElementActions
+            from framework.actions import SeleniumElementActions
             actions = SeleniumElementActions(self._driver, element)
         else:
-            from actions import PlaywrightElementActions
+            from framework.actions import PlaywrightElementActions
             actions = PlaywrightElementActions(self._driver, element)
         
         actions.click(x_offset, y_offset)
@@ -112,10 +112,10 @@ class WebElement:
             raise ElementNotFound(f"Element {self._locator} not found")
         
         if self._driver_type == DriverType.SELENIUM:
-            from actions import SeleniumElementActions
+            from framework.actions import SeleniumElementActions
             actions = SeleniumElementActions(self._driver, element)
         else:
-            from actions import PlaywrightElementActions
+            from framework.actions import PlaywrightElementActions
             actions = PlaywrightElementActions(self._driver, element)
         
         actions.send_keys(text)
@@ -129,10 +129,10 @@ class WebElement:
             return ""
         
         if self._driver_type == DriverType.SELENIUM:
-            from actions import SeleniumElementActions
+            from framework.actions import SeleniumElementActions
             actions = SeleniumElementActions(self._driver, element)
         else:
-            from actions import PlaywrightElementActions
+            from framework.actions import PlaywrightElementActions
             actions = PlaywrightElementActions(self._driver, element)
         
         return actions.get_text()
@@ -146,10 +146,10 @@ class WebElement:
             return None
         
         if self._driver_type == DriverType.SELENIUM:
-            from actions import SeleniumElementActions
+            from framework.actions import SeleniumElementActions
             actions = SeleniumElementActions(self._driver, element)
         else:
-            from actions import PlaywrightElementActions
+            from framework.actions import PlaywrightElementActions
             actions = PlaywrightElementActions(self._driver, element)
         
         return actions.get_attribute(attr_name)

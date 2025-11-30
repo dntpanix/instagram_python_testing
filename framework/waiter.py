@@ -1,7 +1,7 @@
 """Abstraction layer for waiting - supports both Selenium and Playwright"""
 from typing import Optional, Any
 from abc import ABC, abstractmethod
-from logger import setup_logger
+from framework.logger import setup_logger
 
 class BaseWaitManager(ABC):
     """Abstract wait manager interface"""
