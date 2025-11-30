@@ -1,5 +1,3 @@
-"""Abstraction layer for locators - supports both Selenium and Playwright"""
-
 from dataclasses import dataclass
 from enum import Enum
 from typing import Tuple

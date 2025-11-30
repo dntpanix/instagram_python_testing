@@ -1,6 +1,3 @@
-"""Factory for creating driver instances - supports Selenium, Playwright, and remote execution"""
-
-
 class DriverFactory:
     """Factory for creating driver instances"""
 

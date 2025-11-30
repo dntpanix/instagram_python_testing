@@ -1,5 +1,3 @@
-"""Abstraction layer for element actions - supports both Selenium and Playwright"""
-
 from abc import ABC, abstractmethod
 from typing import Optional
 from framework.logger import log_action

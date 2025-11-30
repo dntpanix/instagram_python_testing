@@ -1,5 +1,3 @@
-"""Screenshot management - supports both Selenium and Playwright"""
-
 from abc import ABC, abstractmethod
 from typing import List
 

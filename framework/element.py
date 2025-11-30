@@ -1,5 +1,3 @@
-"""Main element abstraction - supports both Selenium and Playwright"""
-
 from typing import Optional, List, Any
 from framework.logger import log_action, setup_logger
 from framework.locator import Locator, DriverType

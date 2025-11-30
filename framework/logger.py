@@ -1,5 +1,3 @@
-"""Logging module to replace print statements"""
-
 import logging
 from functools import wraps
 from typing import Callable
