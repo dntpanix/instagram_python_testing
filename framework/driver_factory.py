@@ -1,10 +1,20 @@
+from framework.logger import log_waning
+try:
+    from selenium import webdriver
+except ImportError:
+    log_waning("Selenium not installed, Selenium webdriver will not work")
+try:    
+    from playwright.sync_api import sync_playwright
+except ImportError:
+    log_waning("Playwright not installed, Playwright browser factory will not work")
+
+
 class DriverFactory:
     """Factory for creating driver instances"""
 
     @staticmethod
     def create_selenium_local(browser: str = "firefox", headless: bool = True):
         """Create local Selenium driver"""
-        from selenium import webdriver
 
         options = {
             "firefox": webdriver.FirefoxOptions,
@@ -13,7 +23,6 @@ class DriverFactory:
 
         if headless:
             options.add_argument("--headless")
-
         if browser == "firefox":
             return webdriver.Firefox(options=options)
         elif browser == "chrome":
@@ -24,7 +33,6 @@ class DriverFactory:
         command_executor: str, desired_capabilities: dict, timeout: int = 30
     ):
         """Create remote Selenium driver"""
-        from selenium import webdriver
 
         return webdriver.Remote(
             command_executor=command_executor,
@@ -37,7 +45,6 @@ class DriverFactory:
         browser_type: str = "chromium", headless: bool = True, timeout: int = 30000
     ):
         """Create local Playwright browser"""
-        from playwright.sync_api import sync_playwright
 
         p = sync_playwright().start()
 
@@ -55,7 +62,6 @@ class DriverFactory:
         ws_endpoint: str, browser_type: str = "chromium", timeout: int = 30000
     ):
         """Create remote Playwright browser via WebSocket"""
-        from playwright.sync_api import sync_playwright
 
         p = sync_playwright().start()
 

@@ -1,8 +1,8 @@
 from dataclasses import dataclass
 from framework.locator import Locator, LocatorType, DriverType
-from framework.element import WebElement
-from framework.logger import setup_logger, log_action
-
+from framework.element import element, WebElement
+from framework.logger import log_action
+from pages._base import BasePage
 
 @dataclass
 class LoginPageLocators:
@@ -15,12 +15,21 @@ class LoginPageLocators:
     )
 
     # Input fields
-    USERNAME_INPUT = Locator(type=LocatorType.XPATH, value="//input[@name='username']")
+    USERNAME_INPUT = Locator(
+        type=LocatorType.XPATH, 
+        value="//input[@name='username']"
+    )
 
-    PASSWORD_INPUT = Locator(type=LocatorType.XPATH, value="//input[@name='password']")
+    PASSWORD_INPUT = Locator(
+        type=LocatorType.XPATH, 
+        value="//input[@name='password']"
+    )
 
     # Buttons
-    LOGIN_BUTTON = Locator(type=LocatorType.XPATH, value="//button[@type='submit']")
+    LOGIN_BUTTON = Locator(
+        type=LocatorType.XPATH, 
+        value="//button[@type='submit']"
+    )
 
     FACEBOOK_LOGIN_BUTTON = Locator(
         type=LocatorType.XPATH,
@@ -39,13 +48,19 @@ class LoginPageLocators:
     )
 
     # Error message
-    ERROR_MESSAGE = Locator(type=LocatorType.ID, value="error-message")
+    ERROR_MESSAGE = Locator(
+        type=LocatorType.ID, 
+        value="error-message"
+    )
 
     # Logo
-    LOGO_IMAGE = Locator(type=LocatorType.XPATH, value="//i[@aria-label='Instagram']")
+    LOGO_IMAGE = Locator(
+        type=LocatorType.XPATH, 
+        value="//i[@aria-label='Instagram']"
+    )
 
 
-class LoginPage:
+class LoginPage(BasePage):
     """Page Object Model for Login Page"""
 
     def __init__(
@@ -54,107 +69,54 @@ class LoginPage:
         driver_type: DriverType = DriverType.SELENIUM,
         timeout: int = 10000,
     ):
-        """
-        Initialize LoginPage
-
-        Args:
-            driver: Selenium WebDriver or Playwright Page instance
-            driver_type: Type of driver (SELENIUM or PLAYWRIGHT)
-            timeout: Timeout in milliseconds for element waits
-        """
-        if driver_type == DriverType.SELENIUM:
-            if not hasattr(driver, "find_element"):
-                raise TypeError(
-                    f"Expected Selenium WebDriver, got {type(driver).__name__}. "
-                    f"Pass a WebDriver instance for DriverType.SELENIUM"
-                )
-        else:  # PLAYWRIGHT
-            if not hasattr(driver, "locator"):
-                raise TypeError(
-                    f"Expected Playwright Page, got {type(driver).__name__}. "
-                    f"Pass a Page instance for DriverType.PLAYWRIGHT"
-                )
-        self._driver = driver
-        self._driver_type = driver_type
-        self._timeout = timeout
-        self._logger = setup_logger(self.__class__.__name__)
+        super().__init__(driver, driver_type, timeout)
         self._locators = LoginPageLocators()
 
     # Elements as properties
-    @property
+    @element("LOGIN_FORM")
     def login_form(self) -> WebElement:
-        """Get login form element"""
-        return WebElement(
-            self._locators.LOGIN_FORM, self._driver, self._driver_type, self._timeout
-        )
+        """Get login form"""
+        pass
 
-    @property
+    @element("USERNAME_INPUT")
     def username_input(self) -> WebElement:
         """Get username input element"""
-        return WebElement(
-            self._locators.USERNAME_INPUT,
-            self._driver,
-            self._driver_type,
-            self._timeout,
-        )
+        pass
 
-    @property
+    @element("PASSWORD_INPUT")
     def password_input(self) -> WebElement:
         """Get password input element"""
-        return WebElement(
-            self._locators.PASSWORD_INPUT,
-            self._driver,
-            self._driver_type,
-            self._timeout,
-        )
+        pass
 
-    @property
+    @element("LOGIN_BUTTON")
     def login_button(self) -> WebElement:
         """Get login button element"""
-        return WebElement(
-            self._locators.LOGIN_BUTTON, self._driver, self._driver_type, self._timeout
-        )
+        pass
 
-    @property
+    @element("FACEBOOK_LOGIN_BUTTON")
     def facebook_login_button(self) -> WebElement:
         """Get Facebook login button element"""
-        return WebElement(
-            self._locators.FACEBOOK_LOGIN_BUTTON,
-            self._driver,
-            self._driver_type,
-            self._timeout,
-        )
+        pass
 
-    @property
+    @element("FORGOT_PASSWORD_LINK")
     def forgot_password_link(self) -> WebElement:
         """Get forgot password link element"""
-        return WebElement(
-            self._locators.FORGOT_PASSWORD_LINK,
-            self._driver,
-            self._driver_type,
-            self._timeout,
-        )
+        pass
 
-    @property
+    @element("SIGN_UP_LINK")
     def sign_up_link(self) -> WebElement:
         """Get sign up link element"""
-        return WebElement(
-            self._locators.SIGN_UP_LINK, self._driver, self._driver_type, self._timeout
-        )
+        pass
 
-    @property
+    @element("ERROR_MESSAGE")
     def error_message(self) -> WebElement:
         """Get error message element"""
-        return WebElement(
-            self._locators.ERROR_MESSAGE, self._driver, self._driver_type, self._timeout
-        )
+        pass
 
-    @property
+    @element("LOGO_IMAGE")
     def logo_image(self) -> WebElement:
         """Get logo image element"""
-        return WebElement(
-            self._locators.LOGO_IMAGE, self._driver, self._driver_type, self._timeout
-        )
+        pass
 
     # Page state checks
     @log_action("Checking if login page is displayed")

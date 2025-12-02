@@ -39,3 +39,23 @@ def log_action(action_name: str) -> Callable:
         return wrapper
 
     return decorator
+
+
+def log_debug(msg: str = "") -> logging.Logger:
+    logger = setup_logger("logger", logging.DEBUG)
+    logger.debug(msg)
+
+
+def log_info(msg: str = "") -> logging.Logger:
+    logger = setup_logger("logger")
+    logger.info(msg)
+
+
+def log_waning(msg: str = "") -> logging.Logger:
+    logger = setup_logger("logger")
+    logger.warning(msg)
+
+
+def log_error(msg: str = "") -> logging.Logger:
+    logger = setup_logger("logger")
+    logger.error(msg)

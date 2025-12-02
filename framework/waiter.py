@@ -1,34 +1,14 @@
 from typing import Optional, Any
-from abc import ABC, abstractmethod
-from framework.logger import setup_logger
+from framework.logger import setup_logger, log_waning
+
+try:
+    from selenium.webdriver.support.ui import WebDriverWait
+    from selenium.webdriver.support import expected_conditions as EC
+except ImportError:
+    log_waning("Selenium not installed, SeleniumWaitManager will not work")
 
 
-class BaseWaitManager(ABC):
-    """Abstract wait manager interface"""
-
-    @abstractmethod
-    def wait_for_presence(
-        self, locator, timeout: Optional[int] = None
-    ) -> Optional[Any]:
-        """Wait for element presence"""
-        pass
-
-    @abstractmethod
-    def wait_for_clickable(
-        self, locator, timeout: Optional[int] = None
-    ) -> Optional[Any]:
-        """Wait for element to be clickable"""
-        pass
-
-    @abstractmethod
-    def wait_for_visibility(
-        self, locator, timeout: Optional[int] = None
-    ) -> Optional[Any]:
-        """Wait for element visibility"""
-        pass
-
-
-class SeleniumWaitManager(BaseWaitManager):
+class SeleniumWaitManager():
     """Selenium wait implementation"""
 
     def __init__(self, driver, timeout: int = 10000):
@@ -41,9 +21,6 @@ class SeleniumWaitManager(BaseWaitManager):
     ) -> Optional[Any]:
         """Wait for element presence"""
         try:
-            from selenium.webdriver.support.ui import WebDriverWait
-            from selenium.webdriver.support import expected_conditions as EC
-
             actual_timeout = (timeout or self.timeout) / 1000
             wait = WebDriverWait(self.driver, actual_timeout)
             return wait.until(
@@ -59,9 +36,6 @@ class SeleniumWaitManager(BaseWaitManager):
     ) -> Optional[Any]:
         """Wait for element to be clickable"""
         try:
-            from selenium.webdriver.support.ui import WebDriverWait
-            from selenium.webdriver.support import expected_conditions as EC
-
             actual_timeout = (timeout or self.timeout) / 1000
             wait = WebDriverWait(self.driver, actual_timeout)
             return wait.until(
@@ -77,9 +51,6 @@ class SeleniumWaitManager(BaseWaitManager):
     ) -> Optional[Any]:
         """Wait for element visibility"""
         try:
-            from selenium.webdriver.support.ui import WebDriverWait
-            from selenium.webdriver.support import expected_conditions as EC
-
             actual_timeout = (timeout or self.timeout) / 1000
             wait = WebDriverWait(self.driver, actual_timeout)
             return wait.until(
@@ -91,7 +62,7 @@ class SeleniumWaitManager(BaseWaitManager):
             return None
 
 
-class PlaywrightWaitManager(BaseWaitManager):
+class PlaywrightWaitManager():
     """Playwright wait implementation"""
 
     def __init__(self, page, timeout: int = 10000):

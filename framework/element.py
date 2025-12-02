@@ -163,6 +163,21 @@ class WebElement:
         if element:
             self._screenshot_manager.highlight_and_screenshot(element, file_name)
 
+class element:
+    def __init__(self, locator_name: str):
+        self.locator_name = locator_name
+
+    def __call__(self, func) -> WebElement:
+        def wrapper(obj):
+            locator = getattr(obj._locators, self.locator_name)
+            return WebElement(
+                locator,
+                obj._driver,
+                obj._driver_type,
+                obj._timeout,
+            )
+        return property(wrapper)
+
 
 class ManyWebElements(WebElement):
     """Collection of elements"""

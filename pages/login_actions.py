@@ -1,10 +1,11 @@
 import time
 from framework.logger import log_action, setup_logger
+from pages.login import LoginPage
 
 
 class LoginPageActions:
 
-    def __init__(self, login_page):
+    def __init__(self, login_page:LoginPage):
         """
         Initialize LoginPageActions with a LoginPage instance
 

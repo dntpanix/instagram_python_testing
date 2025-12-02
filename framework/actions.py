@@ -1,7 +1,11 @@
 from abc import ABC, abstractmethod
 from typing import Optional
-from framework.logger import log_action
-
+from framework.logger import log_action, log_waning
+try:
+    from selenium.webdriver.common.action_chains import ActionChains
+    from selenium.webdriver.support.select import Select
+except ImportError:
+    log_waning("Selenium not installed, SeleniumElementActions will not work")
 
 class BaseElementActions(ABC):
     """Abstract element actions interface"""
@@ -41,8 +45,6 @@ class SeleniumElementActions(BaseElementActions):
     @log_action("Clicking element")
     def click(self, x_offset: int = 0, y_offset: int = 0, hold_seconds: float = 0):
         """Click element with offset and hold duration"""
-        from selenium.webdriver.common.action_chains import ActionChains
-
         action = ActionChains(self.driver)
         action.move_to_element_with_offset(self.element, x_offset, y_offset).pause(
             hold_seconds
@@ -51,8 +53,6 @@ class SeleniumElementActions(BaseElementActions):
     @log_action("Right-clicking element")
     def right_click(self, x_offset: int = 0, y_offset: int = 0):
         """Right-click element"""
-        from selenium.webdriver.common.action_chains import ActionChains
-
         action = ActionChains(self.driver)
         action.move_to_element_with_offset(
             self.element, x_offset, y_offset
@@ -79,8 +79,6 @@ class SeleniumElementActions(BaseElementActions):
     @log_action("Selecting by text")
     def select_by_text(self, text: str):
         """Select option from dropdown by visible text"""
-        from selenium.webdriver.support.select import Select
-
         select = Select(self.element)
         select.select_by_visible_text(text)
 
