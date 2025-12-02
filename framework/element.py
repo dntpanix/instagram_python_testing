@@ -64,9 +64,12 @@ class WebElement:
         return element is not None
 
     @log_action("Checking if visible")
-    def is_visible(self) -> bool:
+    def is_visible(self, timeout:int = 500) -> bool:
         """Check if element is visible"""
+        old_timeout = self._timeout
+        self._timeout = timeout
         element = self.find()
+        self._timeout = old_timeout
         if element is None:
             return False
 

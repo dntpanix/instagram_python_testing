@@ -14,6 +14,14 @@ DEBUG = os.getenv("DEBUG", "false").lower() == "true"
 HEADLESS = os.getenv("HEADLESS", "false").lower() == "true"
 
 
+@pytest.fixture(scope="session")
+def get_test_credentials() -> tuple[str, str]:
+    """Fixture to provide test credentials from environment variables"""
+    test_username = os.getenv("TEST_USERNAME", "themepark")
+    test_password = os.getenv("TEST_PASSWORD", "password123")
+    return test_username, test_password
+
+
 @contextmanager
 def build_context(url: str):
     context, browser, playwright = DriverFactory.create_playwright_local(
