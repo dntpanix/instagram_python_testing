@@ -6,6 +6,7 @@ from framework.driver_factory import DriverFactory
 from framework.locator import DriverType
 from pages.login import LoginPage
 from pages.login_actions import LoginPageActions
+from tests.helper import logout
 
 
 DEBUG_URL = os.getenv("DEBUG_URL", "http://localhost:5000/")
@@ -47,3 +48,4 @@ def login_page():
         login_page = LoginPage(page, DriverType.PLAYWRIGHT)
         login_page_actions = LoginPageActions(login_page)
         yield login_page_actions
+        logout(url)
