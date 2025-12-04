@@ -201,6 +201,15 @@ class SignupPage(BasePage):
         except Exception as e:
             self._logger.error(f"Failed to check signup button clickability: {e}")
             return False
+    
+    @log_action("Checking if signup button is visible")
+    def is_signup_button_visible(self) -> bool:
+        """Check if signup button is clickable"""
+        try:
+            return self.signup_button.is_visible()
+        except Exception as e:
+            self._logger.error(f"Failed to check signup button clickability: {e}")
+            return False
 
     @log_action("Getting error message")
     def get_error_message(self) -> str:

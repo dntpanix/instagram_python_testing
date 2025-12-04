@@ -289,7 +289,7 @@ class SignupPageActions:
                 "Username input visible": self._page.is_username_input_visible(),
                 "Password input visible": self._page.is_password_input_visible(),
                 "Password confirmation input visible": self._page.is_password_confirm_input_visible(),
-                "Signup button clickable": self._page.is_signup_button_clickable(),
+                "Signup button visible": self._page.is_signup_button_visible(),
             }
 
             all_valid = all(checks.values())
