@@ -39,7 +39,7 @@ def build_context(url: str):
         playwright.stop()
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture()
 def login_page():
     """Fixture to provide LoginPageActions instance"""
     url = DEBUG_URL if DEBUG else TEST_URL

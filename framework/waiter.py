@@ -6,6 +6,7 @@ try:
     from selenium.webdriver.support import expected_conditions as EC
 except ImportError:
     log_waning("Selenium not installed, SeleniumWaitManager will not work")
+from playwright.sync_api import expect
 
 
 class SeleniumWaitManager():
@@ -89,7 +90,7 @@ class PlaywrightWaitManager():
         try:
             actual_timeout = timeout or self.timeout
             locator_obj = self.page.locator(locator)
-            locator_obj.wait_for(state="visible", timeout=actual_timeout)
+            expect(locator_obj).not_to_have_attribute("disabled", None, timeout=actual_timeout)
             return locator_obj
         except Exception as e:
             self.logger.warning(f"Wait for clickable failed: {e}")

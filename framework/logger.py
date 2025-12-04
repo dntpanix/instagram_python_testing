@@ -28,7 +28,7 @@ def log_action(action_name: str) -> Callable:
             logger.info(f"Starting: {action_name} on {locator_info}")
             try:
                 result = func(self, *args, **kwargs)
-                logger.info(f"Success: {action_name}")
+                logger.info(f"{result}: {action_name}")
                 return result
             except Exception as e:
                 logger.error(

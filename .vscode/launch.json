@@ -22,8 +22,8 @@
             "args": [
                 "-v", 
                 "-s",
-                "${file}",
-                //"-k test_name",
+                "D:\\current_jobs\\instagram_python_testing\\tests\\test_login_signin.py",
+                "-k test_login_wo_data",
                 //"--junitxml=report.xml",
                 //"--html=report.html"
                ],
