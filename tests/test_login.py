@@ -40,3 +40,12 @@ def test_try_login_wo_fill_name_or_password(
     assert not login_page._page.login_button.is_clickable()
 
 
+def test_signup_redirect(
+    login_page: LoginPageActions,
+):
+    # Check if login page is displayed
+    assert login_page.is_page_displayed(), "Login page not displayed"
+
+    login_page.click_sign_up()
+    # Check if sign up page is displayed
+    assert not login_page._page.sign_up_link.is_visible(), "Login page still displayed"
