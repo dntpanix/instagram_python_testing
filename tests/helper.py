@@ -1,11 +1,11 @@
-import requests
-from framework.logger import log_info, log_error
+from urllib.parse import urlparse
 
 
-def logout(url:str):
+def logout(_url, page):
     """Make logout"""
-    response = requests.get(f"{url}/logout")
-    if response.ok:
-        log_info("User logout done")
-    else:
-        log_error(f"Can't logout, get: {response}")
+    url = _url
+    parsed = urlparse(url)
+    base_url = f"{parsed.scheme}://{parsed.netloc}"
+    logout_url = f"{base_url}/logout"
+    page._page._driver.goto(logout_url)
+    page._page._driver.goto(url)

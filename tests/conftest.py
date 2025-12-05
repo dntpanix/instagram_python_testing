@@ -44,7 +44,7 @@ def build_context(url: str):
         playwright.stop()
 
 
-@pytest.fixture()
+@pytest.fixture(scope="module")
 def base_page():
     """Base fixture that provides page object and URL"""
     url = DEBUG_URL if DEBUG else TEST_URL
@@ -59,10 +59,10 @@ def login_page(base_page):
     login_page = LoginPage(page, DriverType.PLAYWRIGHT)
     login_page_actions = LoginPageActions(login_page)
     yield login_page_actions
-    logout(url)
+    logout(url, login_page_actions)
 
 
-@pytest.fixture()
+@pytest.fixture(scope="module")
 def signup_page(base_page):
     """fixture for signup page"""
     url, page = base_page
@@ -75,4 +75,4 @@ def signup_page(base_page):
     signup_page_actions = SignupPageActions(signup_page)
     
     yield signup_page_actions
-    logout(url)
+    logout(url, signup_page_actions)

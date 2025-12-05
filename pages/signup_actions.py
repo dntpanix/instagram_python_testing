@@ -94,8 +94,8 @@ class SignupPageActions:
             # Wait for page to process signup
             time.sleep(wait_after_signup)
 
-            self._logger.info("Signup completed successfully")
-            return True
+            self._logger.info("Signup fill successfully")
+            return not self._page.is_error_message_displayed()  # Assuming redirect on success
 
         except Exception as e:
             self._logger.error(f"Signup failed: {type(e).__name__}: {str(e)}")
