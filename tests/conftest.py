@@ -69,10 +69,10 @@ def signup_page(base_page):
     # Navigate to signup URL
     signup_url = f"{url}/accounts/emailsignup/"
     page.goto(signup_url)
-    
+
     # Create page objects
     signup_page = SignupPage(page, DriverType.PLAYWRIGHT)
     signup_page_actions = SignupPageActions(signup_page)
-    
+
     yield signup_page_actions
     logout(url, signup_page_actions)

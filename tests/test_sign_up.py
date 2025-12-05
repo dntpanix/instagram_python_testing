@@ -9,7 +9,6 @@ def test_signup_page_is_displayed(signup_page: SignupPageActions):
 
 
 def test_all_form_elements_visible(signup_page: SignupPageActions):
-
     """Test that email input is visible"""
     assert signup_page.is_email_input_visible(), "Email input should be visible"
 
@@ -20,10 +19,14 @@ def test_all_form_elements_visible(signup_page: SignupPageActions):
     assert signup_page.is_password_input_visible(), "Password input should be visible"
 
     """Test that password confirmation input is visible"""
-    assert signup_page.is_password_confirm_input_visible(), "Password confirmation input should be visible"
+    assert (
+        signup_page.is_password_confirm_input_visible()
+    ), "Password confirmation input should be visible"
 
     """Test that signup button is visible"""
-    assert signup_page._page.is_signup_button_visible(), "Signup button should be visible"
+    assert (
+        signup_page._page.is_signup_button_visible()
+    ), "Signup button should be visible"
 
     """Test that landing image is visible"""
     assert signup_page.is_landing_image_visible(), "Landing image should be visible"
@@ -33,9 +36,9 @@ def test_all_form_elements_visible(signup_page: SignupPageActions):
     assert description is not None, "Description text should exist"
     assert len(description) > 0, "Description text should not be empty"
 
+
 def test_signup_with_valid_credentials(
-        signup_page: SignupPageActions,
-        login_page: LoginPageActions
+    signup_page: SignupPageActions, login_page: LoginPageActions
 ):
     """Test signup with valid credentials"""
     timestamp = int(time.time())
@@ -44,34 +47,35 @@ def test_signup_with_valid_credentials(
     password = "ValidPass123!"
 
     result = signup_page.signup(
-        email=email,
-        username=username,
-        password=password,
-        password_confirm=password
+        email=email, username=username, password=password, password_confirm=password
     )
-    
+
     assert result is True, "Signup should succeed with valid credentials"
-    
+
     login_page.login(username, password)
 
     # Wait for redirect
     assert not login_page._page.login_form.is_visible(), "Login form still displayed"
 
 
-def test_signup_with_existing_username(signup_page: SignupPageActions, get_test_credentials: tuple[str, str]):
+def test_signup_with_existing_username(
+    signup_page: SignupPageActions, get_test_credentials: tuple[str, str]
+):
     """Test signup with an existing username"""
     signup_page._page._driver.goto("http://localhost:5000/accounts/emailsignup/")
     existing_username, _ = get_test_credentials
     email = f"newuser{int(time.time())}@test.com"
     password = "ValidPass123!"
-    
+
     result = signup_page.signup(
         email=email,
         username=existing_username,
         password=password,
-        password_confirm=password
+        password_confirm=password,
     )
     assert result is False, "Signup should fail with existing username"
 
     error_message = signup_page.get_error_message()
-    assert "username already taken" in error_message.lower(), "Error message should indicate username is taken"
+    assert (
+        "username already taken" in error_message.lower()
+    ), "Error message should indicate username is taken"

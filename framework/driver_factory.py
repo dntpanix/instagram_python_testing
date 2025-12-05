@@ -1,9 +1,10 @@
 from framework.logger import log_waning
+
 try:
     from selenium import webdriver
 except ImportError:
     log_waning("Selenium not installed, Selenium webdriver will not work")
-try:    
+try:
     from playwright.sync_api import sync_playwright
 except ImportError:
     log_waning("Playwright not installed, Playwright browser factory will not work")

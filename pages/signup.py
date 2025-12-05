@@ -4,6 +4,7 @@ from framework.element import element, WebElement
 from framework.logger import log_action
 from pages._base import BasePage
 
+
 @dataclass
 class SignupPageLocators:
     """All locators for the signup page"""
@@ -11,35 +12,22 @@ class SignupPageLocators:
     # Main form
     SIGNUP_FORM = Locator(
         type=LocatorType.ID,
-        value='signupForm',
+        value="signupForm",
     )
 
     # Input fields
-    EMAIL_INPUT = Locator(
-        type=LocatorType.XPATH, 
-        value="//input[@name='email']"
-    )
+    EMAIL_INPUT = Locator(type=LocatorType.XPATH, value="//input[@name='email']")
 
-    USERNAME_INPUT = Locator(
-        type=LocatorType.XPATH, 
-        value="//input[@name='username']"
-    )
+    USERNAME_INPUT = Locator(type=LocatorType.XPATH, value="//input[@name='username']")
 
-    PASSWORD_INPUT = Locator(
-        type=LocatorType.XPATH, 
-        value="//input[@name='password']"
-    )
+    PASSWORD_INPUT = Locator(type=LocatorType.XPATH, value="//input[@name='password']")
 
     PASSWORD_CONFIRM_INPUT = Locator(
-        type=LocatorType.XPATH, 
-        value="//input[@name='password_confirm']"
+        type=LocatorType.XPATH, value="//input[@name='password_confirm']"
     )
 
     # Buttons
-    SIGNUP_BUTTON = Locator(
-        type=LocatorType.XPATH, 
-        value="//button[@type='submit']"
-    )
+    SIGNUP_BUTTON = Locator(type=LocatorType.XPATH, value="//button[@type='submit']")
 
     # Links
     LOGIN_LINK = Locator(
@@ -48,16 +36,10 @@ class SignupPageLocators:
     )
 
     # Error message
-    ERROR_MESSAGE = Locator(
-        type=LocatorType.ID, 
-        value="error-message"
-    )
+    ERROR_MESSAGE = Locator(type=LocatorType.ID, value="error-message")
 
     # Logo
-    LOGO_IMAGE = Locator(
-        type=LocatorType.XPATH, 
-        value="//i[@aria-label='Instagram']"
-    )
+    LOGO_IMAGE = Locator(type=LocatorType.XPATH, value="//i[@aria-label='Instagram']")
 
     # Landing image
     LANDING_IMAGE = Locator(
@@ -201,7 +183,7 @@ class SignupPage(BasePage):
         except Exception as e:
             self._logger.error(f"Failed to check signup button clickability: {e}")
             return False
-    
+
     @log_action("Checking if signup button is visible")
     def is_signup_button_visible(self) -> bool:
         """Check if signup button is clickable"""

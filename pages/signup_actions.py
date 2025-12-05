@@ -59,7 +59,9 @@ class SignupPageActions:
             Exception: If signup fails with details
         """
         try:
-            self._logger.info(f"Starting signup with email: {email}, username: {username}")
+            self._logger.info(
+                f"Starting signup with email: {email}, username: {username}"
+            )
 
             # Check if inputs are visible
             if not self._page.is_email_input_visible():
@@ -95,7 +97,9 @@ class SignupPageActions:
             time.sleep(wait_after_signup)
 
             self._logger.info("Signup fill successfully")
-            return not self._page.is_error_message_displayed()  # Assuming redirect on success
+            return (
+                not self._page.is_error_message_displayed()
+            )  # Assuming redirect on success
 
         except Exception as e:
             self._logger.error(f"Signup failed: {type(e).__name__}: {str(e)}")

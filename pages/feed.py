@@ -3,6 +3,7 @@ from framework.locator import Locator, LocatorType, DriverType
 from framework.element import element, WebElement
 from pages._base import BasePage
 
+
 @dataclass
 class FeedPageLocators:
     """All locators for the feed page"""
@@ -94,7 +95,7 @@ class FeedPageLocators:
     # Post image
     POST_IMAGE = Locator(
         type=LocatorType.XPATH,
-        value='//article//img[@alt]',
+        value="//article//img[@alt]",
     )
 
     # Post caption
@@ -142,7 +143,7 @@ class FeedPageLocators:
     # Post timestamp
     POST_TIMESTAMP = Locator(
         type=LocatorType.XPATH,
-        value='//article//time[@datetime]',
+        value="//article//time[@datetime]",
     )
 
     # Stories section

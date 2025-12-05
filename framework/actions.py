@@ -1,11 +1,13 @@
 from abc import ABC, abstractmethod
 from typing import Optional
 from framework.logger import log_action, log_waning
+
 try:
     from selenium.webdriver.common.action_chains import ActionChains
     from selenium.webdriver.support.select import Select
 except ImportError:
     log_waning("Selenium not installed, SeleniumElementActions will not work")
+
 
 class BaseElementActions(ABC):
     """Abstract element actions interface"""

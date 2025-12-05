@@ -6,11 +6,11 @@ class BasePage:
     """Base class for all page objects."""
 
     def __init__(
-            self,
-            driver,
-            driver_type: DriverType = DriverType.SELENIUM,
-            timeout: int = 10000,
-        ):
+        self,
+        driver,
+        driver_type: DriverType = DriverType.SELENIUM,
+        timeout: int = 10000,
+    ):
         """
         Initialize LoginPage
 

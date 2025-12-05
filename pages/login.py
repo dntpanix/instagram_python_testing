@@ -4,6 +4,7 @@ from framework.element import element, WebElement
 from framework.logger import log_action
 from pages._base import BasePage
 
+
 @dataclass
 class LoginPageLocators:
     """All locators for the login page"""
@@ -15,21 +16,12 @@ class LoginPageLocators:
     )
 
     # Input fields
-    USERNAME_INPUT = Locator(
-        type=LocatorType.XPATH, 
-        value="//input[@name='username']"
-    )
+    USERNAME_INPUT = Locator(type=LocatorType.XPATH, value="//input[@name='username']")
 
-    PASSWORD_INPUT = Locator(
-        type=LocatorType.XPATH, 
-        value="//input[@name='password']"
-    )
+    PASSWORD_INPUT = Locator(type=LocatorType.XPATH, value="//input[@name='password']")
 
     # Buttons
-    LOGIN_BUTTON = Locator(
-        type=LocatorType.XPATH, 
-        value="//button[@type='submit']"
-    )
+    LOGIN_BUTTON = Locator(type=LocatorType.XPATH, value="//button[@type='submit']")
 
     FACEBOOK_LOGIN_BUTTON = Locator(
         type=LocatorType.XPATH,
@@ -48,16 +40,10 @@ class LoginPageLocators:
     )
 
     # Error message
-    ERROR_MESSAGE = Locator(
-        type=LocatorType.ID, 
-        value="error-message"
-    )
+    ERROR_MESSAGE = Locator(type=LocatorType.ID, value="error-message")
 
     # Logo
-    LOGO_IMAGE = Locator(
-        type=LocatorType.XPATH, 
-        value="//i[@aria-label='Instagram']"
-    )
+    LOGO_IMAGE = Locator(type=LocatorType.XPATH, value="//i[@aria-label='Instagram']")
 
 
 class LoginPage(BasePage):

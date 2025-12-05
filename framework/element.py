@@ -224,4 +224,5 @@ class ManyWebElements(WebElement):
 
 class ElementNotFound(Exception):
     """Custom exception for element not found"""
+
     pass

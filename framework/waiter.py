@@ -9,7 +9,7 @@ except ImportError:
 from playwright.sync_api import expect
 
 
-class SeleniumWaitManager():
+class SeleniumWaitManager:
     """Selenium wait implementation"""
 
     def __init__(self, driver, timeout: int = 10000):
@@ -63,7 +63,7 @@ class SeleniumWaitManager():
             return None
 
 
-class PlaywrightWaitManager():
+class PlaywrightWaitManager:
     """Playwright wait implementation"""
 
     def __init__(self, page, timeout: int = 10000):
@@ -90,7 +90,9 @@ class PlaywrightWaitManager():
         try:
             actual_timeout = timeout or self.timeout
             locator_obj = self.page.locator(locator)
-            expect(locator_obj).not_to_have_attribute("disabled", None, timeout=actual_timeout)
+            expect(locator_obj).not_to_have_attribute(
+                "disabled", None, timeout=actual_timeout
+            )
             return locator_obj
         except Exception as e:
             self.logger.warning(f"Wait for clickable failed: {e}")

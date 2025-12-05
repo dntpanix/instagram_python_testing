@@ -5,7 +5,7 @@ from pages.login import LoginPage
 
 class LoginPageActions:
 
-    def __init__(self, login_page:LoginPage):
+    def __init__(self, login_page: LoginPage):
         """
         Initialize LoginPageActions with a LoginPage instance
 

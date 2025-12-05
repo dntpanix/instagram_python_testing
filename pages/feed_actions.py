@@ -14,16 +14,13 @@ class FeedPageActions:
         """
         self._page = feed_page
         self._logger = setup_logger(self.__class__.__name__)
-    
+
     # Page state checks
     @log_action("Checking if feed page is displayed")
     def is_page_displayed(self) -> bool:
         """Check if feed page is displayed"""
         try:
-            return (
-                self.feed_container.is_presented()
-                and self.nav_bar.is_presented()
-            )
+            return self.feed_container.is_presented() and self.nav_bar.is_presented()
         except Exception as e:
             self._logger.error(f"Failed to check if page displayed: {e}")
             return False
@@ -265,14 +262,14 @@ class FeedPageActions:
         """
         try:
             self._logger.debug(f"Adding comment: {comment_text}")
-            
+
             # Click comment button to focus input
             self._page.comment_button.click()
             time.sleep(0.3)
-            
+
             # Enter comment text
             self._page.comment_input.send_keys(comment_text)
-            
+
             # Post the comment
             self._page.post_comment_button.click()
             time.sleep(wait_after)
