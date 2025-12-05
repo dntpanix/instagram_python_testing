@@ -369,89 +369,6 @@ class FeedPageActions:
             self._logger.error(f"Failed to follow suggested user: {e}")
             raise
 
-    # Page state checks
-    @log_action("Checking if feed page is displayed")
-    def is_page_displayed(self) -> bool:
-        """Check if feed page is displayed"""
-        try:
-            return self._page.is_page_displayed()
-        except Exception as e:
-            self._logger.error(f"Failed to check page display: {e}")
-            return False
-
-    @log_action("Checking if navigation bar is visible")
-    def is_nav_bar_visible(self) -> bool:
-        """Check if navigation bar is visible"""
-        try:
-            return self._page.is_nav_bar_visible()
-        except Exception as e:
-            self._logger.error(f"Failed to check nav bar visibility: {e}")
-            return False
-
-    @log_action("Checking if posts are visible")
-    def is_posts_visible(self) -> bool:
-        """Check if posts are visible"""
-        try:
-            return self._page.is_posts_visible()
-        except Exception as e:
-            self._logger.error(f"Failed to check posts visibility: {e}")
-            return False
-
-    @log_action("Checking if stories are visible")
-    def is_stories_visible(self) -> bool:
-        """Check if stories section is visible"""
-        try:
-            return self._page.is_stories_visible()
-        except Exception as e:
-            self._logger.error(f"Failed to check stories visibility: {e}")
-            return False
-
-    @log_action("Checking if suggestions are visible")
-    def is_suggestions_visible(self) -> bool:
-        """Check if suggestions section is visible"""
-        try:
-            return self._page.is_suggestions_visible()
-        except Exception as e:
-            self._logger.error(f"Failed to check suggestions visibility: {e}")
-            return False
-
-    # Getting information
-    @log_action("Getting post author name")
-    def get_post_author_name(self) -> str:
-        """Get the author name of the first post"""
-        try:
-            return self._page.get_post_author_name()
-        except Exception as e:
-            self._logger.error(f"Failed to get post author name: {e}")
-            return None
-
-    @log_action("Getting post caption")
-    def get_post_caption(self) -> str:
-        """Get the caption of the first post"""
-        try:
-            return self._page.get_post_caption_text()
-        except Exception as e:
-            self._logger.error(f"Failed to get post caption: {e}")
-            return None
-
-    @log_action("Getting likes count")
-    def get_likes_count(self) -> str:
-        """Get the likes count of the first post"""
-        try:
-            return self._page.get_likes_count_text()
-        except Exception as e:
-            self._logger.error(f"Failed to get likes count: {e}")
-            return None
-
-    @log_action("Getting posts count")
-    def get_posts_count(self) -> int:
-        """Get the number of visible posts"""
-        try:
-            return self._page.get_posts_count()
-        except Exception as e:
-            self._logger.error(f"Failed to get posts count: {e}")
-            return 0
-
     # Complex actions
     @log_action("Interacting with first post")
     def interact_with_first_post(
@@ -490,16 +407,6 @@ class FeedPageActions:
             self._logger.error(f"Post interaction failed: {e}")
             return False
 
-    @log_action("Taking screenshot")
-    def screenshot(self, file_name: str = "feed_page.png") -> None:
-        """Take a screenshot of the feed page"""
-        try:
-            self._page.screenshot(file_name)
-            self._logger.info(f"Screenshot saved: {file_name}")
-        except Exception as e:
-            self._logger.error(f"Failed to take screenshot: {e}")
-            raise
-
     @log_action("Validating feed page")
     def validate_feed_page(self) -> bool:
         """
@@ -510,12 +417,12 @@ class FeedPageActions:
         """
         try:
             checks = {
-                "Feed container visible": self._page.is_page_displayed(),
-                "Navigation bar visible": self._page.is_nav_bar_visible(),
-                "Posts visible": self._page.is_posts_visible(),
-                "Home button clickable": self._page.is_home_button_clickable(),
-                "Create post button clickable": self._page.is_create_post_button_clickable(),
-                "Profile button clickable": self._page.is_profile_button_clickable(),
+                "Feed container visible": self.is_page_displayed(),
+                "Navigation bar visible": self.is_nav_bar_visible(),
+                "Posts visible": self.is_posts_visible(),
+                "Home button clickable": self.is_home_button_clickable(),
+                "Create post button clickable": self.is_create_post_button_clickable(),
+                "Profile button clickable": self.is_profile_button_clickable(),
             }
 
             all_valid = all(checks.values())

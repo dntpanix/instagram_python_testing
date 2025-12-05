@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 from framework.locator import Locator, LocatorType, DriverType
 from framework.element import element, WebElement
-from framework.logger import log_action
 from pages._base import BasePage
 
 @dataclass
